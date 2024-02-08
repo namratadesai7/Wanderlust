@@ -11,8 +11,11 @@ const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const User=require("./models/user.js");
 
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
+
+
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 const MONGO_URL ="mongodb://127.0.0.1:27017/wanderlust";
 
@@ -55,28 +58,32 @@ app.use(passport.initialize());
 app.use(passport.session()); 
 passport.use(new LocalStrategy(User.authenticate()));
 
-app.use((req,res,next) =>{  //middleware for listing and review for sending success and error
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use((req,res,next) =>{  //middleware for listing and review routes for sending success and error
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
+    res.locals.curruser=req.user;
  
     next();
 })
 
-app.get("/demouser",async(req,res) =>{
-    let fakeUser= new User({
-        email:"student@gmail.com",
-        username:"delta-student"
-    });
+// app.get("/demouser",async(req,res) =>{
+//     let fakeUser= new User({
+//         email:"student@gmail.com",
+//         username:"delta-student"
+//     });
 
-    let registeredUser=await User.register(fakeUser,"helloworld"); 
-    res.send(registeredUser);
-})
+//     let registeredUser=await User.register(fakeUser,"helloworld"); 
+//     res.send(registeredUser);
+// })
 
 //after shiftings all the apis from below to routes folder i have to write below line
-app.use("/listings",listings);
+app.use("/listings",listingRouter);
 
 //do the same with Review 
-app.use("/listings/:id/reviews",reviews); // here the id stays in the parent route in app.js and is not passed to child route in review
+app.use("/listings/:id/reviews",reviewRouter); // here the id stays in the parent route in app.js and is not passed to child route in review
                                             //we can use merge params to pass it to the child route also
 // app.get("/testListing",async (req,res) => {
 //     let sampleListing= new Listing({
@@ -90,6 +97,8 @@ app.use("/listings/:id/reviews",reviews); // here the id stays in the parent rou
 //     console.log("sample was saved");
 //     res.send("successful testing");
 // });
+
+app.use("/",userRouter); 
 
 app.all("*",(req,res,next) =>{
     next(new ExpressError(404,"Page Not Found!"));

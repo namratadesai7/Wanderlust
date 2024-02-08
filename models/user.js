@@ -9,9 +9,9 @@ const userSchema= new Schema({
      }
 });
 
-User.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('User',u serSchema); 
+module.exports = mongoose.model('User',userSchema); 
 
 
 

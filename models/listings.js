@@ -28,6 +28,10 @@ const ListingSchema = new mongoose.Schema({
         },
 
     ],
+    Owner:{
+        type:Schema.Types.ObjectId,
+        ref:"User",
+    }
 });
 
 ListingSchema.post("findOneAndDelete",async(listing) =>{
