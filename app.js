@@ -65,6 +65,7 @@ app.use((req,res,next) =>{  //middleware for listing and review routes for sendi
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.curruser=req.user;
+   
  
     next();
 })
