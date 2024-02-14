@@ -3,7 +3,7 @@
  <div class="row mt-3">
     <div class="col-8 offset-2">
         <h3>Edit your Listing</h3>
-        <form method="POST" action="/listings/<%= listing._id%>?_method=PUT" novalidate class="needs-validation"> 
+        <form method="POST" action="/listings/<%= listing._id%>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data"> 
             <!-- //to convert this post to put we use package method overide -->
             <div class="mb-2">
                 <label for="title" class="form-label">Title</label>
@@ -16,10 +16,15 @@
                 <textarea id="" class="form-control" name="listing[description]" required><%= listing.description   %> </textarea>
                 <div class="invalid-feedback">Please enter a short description</div>
             </div>
-    
+            
+            <div class="mb-3">
+                Original Listing Image <br />
+                <img src="<%= originalImageUrl %>" alt="">
+            </div>
+
             <div class="mb-2">
-                <label for="image" class="form-label">image Link</label>
-                <input class="form-control" name="listing[image]" value="<%= listing.image   %>"  type="text" required>
+                <label for="image" class="form-label">Upload New Image </label>
+                <input class="form-control" name="listing[image]" type="file" >
             </div>
             
             <div class="row">

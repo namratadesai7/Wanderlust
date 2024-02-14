@@ -10,17 +10,12 @@ const ListingSchema = new mongoose.Schema({
     },
     description:String,
     image:{
-    default:
-        "https://unsplash.com/photos/a-person-swimming-over-a-coral-reef-with-lots-of-fish-xDQKvPjxtxo",
-        type:String,
-        set:(v) => 
-        v === "" 
-        ? "https://unsplash.com/photos/a-person-swimming-over-a-coral-reef-with-lots-of-fish-xDQKvPjxtxo" 
-        : v,
+        url:String,
+        filename:String,
     },    
-    price:Number,
-    location:String,
-    country:String,
+        price:Number,
+        location:String,
+        country:String,
     reviews:[
         {
             type:Schema.Types.ObjectId,
@@ -31,7 +26,25 @@ const ListingSchema = new mongoose.Schema({
     Owner:{
         type:Schema.Types.ObjectId,
         ref:"User",
-    }
+    },
+    geometry:{
+        type:{
+            type:String,    //Dont do '{ location:{type:String}}'
+            enum:['Point'],  //location type must be a 'point'
+            required:true
+        },
+        coordinates:{
+            type:[Number],
+            required:true,
+        }
+    },
+   
+    // category:{
+    //     type:String,
+    //     enum:["mountains","arctic","fans","deserts"]
+
+    // }
+
 });
 
 ListingSchema.post("findOneAndDelete",async(listing) =>{
