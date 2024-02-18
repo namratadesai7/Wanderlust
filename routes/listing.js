@@ -9,7 +9,7 @@ const {storage}= require("../cloudConfig.js");
 const upload= multer({storage});
 // const upload= multer({dest:'uploads/'}); //when we want to save in local storage
 
-//earlier all the below app.get ,app.post were in app.js file but now we have created different folder routes and 
+//earlier all the below APP.USE,app.get ,app.post were in app.js file but now we have created different folder routes and 
 //pasted below all of the apis and changed app to router.
 //Also replace "/listings" with "/"
 //Index Route
@@ -17,7 +17,7 @@ const upload= multer({storage});
 router.route("/")
 .get(wrapAsync(listingController.index))        //as soon as we get "get" request we pass callbackfunction "index"
 .post(isLoggedIn,upload.single('listing[image]'),validateListing,wrapAsync(listingController.createListing));
-// 
+
 
 
 //New route - we need to put it above the /:id route other wise router logic will conside "new" as id

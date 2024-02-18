@@ -8,14 +8,14 @@ const express= require("express");
 const app=express();
 const mongoose= require('mongoose');
 const path= require("path");
-const methodOverride= require("method-override");
-const ejsMate= require("ejs-mate");   //helps in creating templates/layers 
+const methodOverride= require("method-override"); ///Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
+const ejsMate= require("ejs-mate");   //helps in creating templates/layers  such as navbar which is shown in all the pages
 const ExpressError =require("./utils/ExpressError.js");
 const session=require("express-session");
 const MongoStore=require('connect-mongo'); //above express session can be used only on devlopment level now at production level we need connectmongo to store variable in session
 const flash=require("connect-flash");
-const passport=require("passport");
-const LocalStrategy=require("passport-local");
+const passport=require("passport");  //Passport's sole purpose is to authenticate requests, which it does through an extensible set of plugins known as strategies
+const LocalStrategy=require("passport-local");  //it is one of passport stratergy
 const User=require("./models/user.js");
 
 
@@ -44,6 +44,8 @@ app.use(methodOverride("_method"));
 app.engine('ejs',ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
+
+//this is added after using connect-mongo instead of express-session
 const store= MongoStore.create({
     mongoUrl:dbUrl,
     crypto:{
@@ -123,6 +125,8 @@ app.use("/listings/:id/reviews",reviewRouter); // here the id stays in the paren
 
 app.use("/",userRouter); 
 
+
+//after expresserror checks all the error butthe page does not ewixt the following route will be used
 app.all("*",(req,res,next) =>{
     next(new ExpressError(404,"Page Not Found!"));
 });
