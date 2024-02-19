@@ -24,6 +24,8 @@ router.route("/")
 //and try to find it in database
 router.get("/new",isLoggedIn,listingController.renderNewForm );
 
+//search
+router.get("/search",wrapAsync(listingController.searchlisting));
 
 //Show Route //Update Route //Delete Route
 router.route("/:id")

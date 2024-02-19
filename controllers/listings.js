@@ -8,6 +8,29 @@ const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 
 
+module.exports.searchlisting = async(req,res) =>{
+
+    const dest=req.query.dest;
+    console.log(dest);
+
+        const allListings= await Listing.find({ location: dest })
+        .populate({path:"reviews",
+                populate:{
+            path:"author",
+            },
+        })
+    .populate("Owner");
+
+        if(!allListings){
+            req.flash("error","Lisiting you requested for does not exist!");
+            res.redirect("/listings");
+        }
+        console.log(allListings);
+        res.render("listings/index.ejs",{allListings});
+        
+ 
+};
+
 module.exports.index=async(req,res) => {
 
  const allListings= await Listing.find({});
@@ -34,7 +57,7 @@ module.exports.showListing= async(req,res) => {
        req.flash("error","Lisiting you requested for does not exist!");
        res.redirect("/listings");
    }
-   //console.log(listing);
+   console.log(listing);
     res.render("listings/show.ejs",{listing});
    
    };

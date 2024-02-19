@@ -9,7 +9,7 @@ const latitude = listing.geometry.coordinates[1];
     zoom: 7, // starting zoom
     });
 
-console.log(coordinates);
+//console.log(coordinates);
 // Ensure that coordinates is in the format [longitude, latitude]
 
 //add map marker
